@@ -1,0 +1,268 @@
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply m-0 min-h-screen bg-meat-dark font-sans text-white antialiased;
+    direction: rtl;
+    font-weight: 400;
+    font-feature-settings: 'ss01';
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    @apply bg-meat-red/60 text-white;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-meat-red/70 ring-offset-2 ring-offset-meat-dark;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+@layer components {
+  .app-bg {
+    background-color: #121212;
+    background-image:
+      radial-gradient(ellipse 55% 45% at 100% 0%, rgba(201, 28, 28, 0.14), transparent 65%),
+      radial-gradient(ellipse 45% 40% at 0% 100%, rgba(25, 118, 210, 0.055), transparent 65%),
+      linear-gradient(rgba(255, 255, 255, 0.017) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.017) 1px, transparent 1px);
+    background-size: auto, auto, 46px 46px, 46px 46px;
+    background-attachment: fixed;
+  }
+
+  .panel {
+    @apply rounded-2xl border border-white/[0.065] bg-meat-panel/90 shadow-panel backdrop-blur-sm;
+    background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0) 48%);
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between gap-3 border-b border-white/[0.055] px-5 py-4 sm:px-6;
+  }
+
+  .panel-title {
+    @apply flex items-center gap-2.5 text-[15px] font-bold text-white;
+  }
+
+  .panel-subtitle {
+    @apply mt-1 text-xs text-meat-muted;
+  }
+
+  .field-label {
+    @apply mb-2 flex items-center gap-1.5 text-[13px] font-medium text-white/70;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-white/10 bg-[#151515] px-3.5 py-2.5 text-sm text-white shadow-inner shadow-black/20 transition placeholder:text-white/25 hover:border-white/20 focus:border-meat-red/80 focus:bg-[#111111] focus:outline-none focus:ring-4 focus:ring-meat-red/10 disabled:cursor-not-allowed disabled:opacity-55;
+  }
+
+  .input-error {
+    @apply border-red-500/80 focus:border-red-500 focus:ring-red-500/10;
+  }
+
+  .input-icon {
+    @apply pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-white/35;
+  }
+
+  .select {
+    @apply input appearance-none pl-10;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-55;
+  }
+
+  .btn-primary {
+    @apply btn bg-red-sheen text-white shadow-red-glow hover:brightness-110 active:scale-[0.985];
+  }
+
+  .btn-secondary {
+    @apply btn border border-white/10 bg-white/[0.055] text-white/85 hover:border-white/20 hover:bg-white/[0.09] active:scale-[0.985];
+  }
+
+  .btn-ghost {
+    @apply btn text-white/65 hover:bg-white/[0.06] hover:text-white;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600/15 text-red-300 hover:bg-red-600/25;
+  }
+
+  .icon-box {
+    @apply inline-flex shrink-0 items-center justify-center rounded-xl;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium;
+  }
+
+  .table-wrap {
+    @apply max-w-full overflow-x-auto;
+  }
+
+  .data-table {
+    @apply w-full min-w-[760px] border-collapse text-right;
+  }
+
+  .data-table thead th {
+    @apply whitespace-nowrap border-b border-white/[0.07] bg-white/[0.025] px-4 py-3 text-[12px] font-medium text-white/50 first:rounded-r-lg last:rounded-l-lg;
+  }
+
+  .data-table tbody td {
+    @apply whitespace-nowrap border-b border-white/[0.045] px-4 py-3.5 text-[13px] text-white/80;
+  }
+
+  .data-table tbody tr {
+    @apply transition-colors hover:bg-white/[0.025];
+  }
+
+  .data-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden rounded-lg bg-white/[0.055];
+  }
+
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full animate-shimmer;
+    background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  }
+
+  .divider {
+    @apply h-px w-full bg-white/[0.06];
+  }
+
+  .link-subtle {
+    @apply text-xs font-medium text-white/45 transition hover:text-white;
+  }
+
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+  }
+
+  .scroll-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scroll-thin::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .chart-grid line {
+    stroke: rgba(255, 255, 255, 0.055);
+  }
+
+  .chart-tooltip {
+    @apply rounded-xl border border-white/10 bg-[#181818]/95 px-3.5 py-3 text-xs shadow-2xl backdrop-blur-md;
+    direction: rtl;
+  }
+
+  .stagger-1 {
+    animation-delay: 60ms;
+  }
+  .stagger-2 {
+    animation-delay: 120ms;
+  }
+  .stagger-3 {
+    animation-delay: 180ms;
+  }
+  .stagger-4 {
+    animation-delay: 240ms;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ltr {
+    direction: ltr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
