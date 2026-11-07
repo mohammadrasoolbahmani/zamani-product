@@ -3,8 +3,14 @@ name: Keep scheduled workflows active
 # GitHub automatically disables scheduled workflows after 60 days without
 # repository activity. This monthly heartbeat commits a timestamp so the
 # keep-alive schedule keeps running.
+#
+# The push trigger is limited to changes of this workflow file, so it can be
+# used to verify the write permission without creating a commit loop.
 
 on:
+  push:
+    paths:
+      - ".github/workflows/repo-activity.yml"
   schedule:
     - cron: "0 3 1 * *"
   workflow_dispatch:
