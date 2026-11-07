@@ -12,6 +12,7 @@ from django.core.management.base import BaseCommand
 from production.models import Producer, Product
 
 PRODUCTS = (
+    "استیک ۶۰ درصد",
     "همبرگر ۶۰ درصد ۱۰۰ گرمی",
     "همبرگر ۶۰ درصد ۱۲۵ گرمی",
     "همبرگر ۹۰ درصد ۱۰۰ گرمی",
