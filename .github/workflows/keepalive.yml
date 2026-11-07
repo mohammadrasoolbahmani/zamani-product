@@ -1,0 +1,42 @@
+name: Keep Render backend awake
+
+# Render's free web service sleeps after ~15 minutes of inactivity.
+# This workflow pings the public health endpoint every 5 minutes so the
+# backend (and the Neon database behind it) stays warm.
+#
+# The workflow only runs from the default branch (main).
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    name: Ping /api/health/
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Wake backend
+        run: |
+          set -u
+          url="https://zamaniburger-api-8kc1.onrender.com/api/health/"
+          for attempt in 1 2 3; do
+            echo "Attempt ${attempt} — ${url}"
+            if curl --fail --silent --show-error --max-time 120 "${url}?t=$(date +%s)"; then
+              echo
+              echo "Backend is awake."
+              exit 0
+            fi
+            echo "No response yet; retrying in 15s..."
+            sleep 15
+          done
+          echo "Backend did not respond after 3 attempts."
+          exit 1
