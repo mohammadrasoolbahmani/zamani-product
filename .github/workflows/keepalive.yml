@@ -4,9 +4,11 @@ name: Keep Render backend awake
 # This workflow pings the public health endpoint every 5 minutes so the
 # backend (and the Neon database behind it) stays warm.
 #
+# It also runs on every push, which gives an immediate verification run.
 # The workflow only runs from the default branch (main).
 
 on:
+  push:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
