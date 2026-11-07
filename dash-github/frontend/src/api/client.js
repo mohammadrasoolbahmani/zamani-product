@@ -6,9 +6,14 @@ export const REFRESH_KEY = 'refresh_token'
 const configuredBase = import.meta.env.VITE_API_URL || '/api'
 const baseURL = configuredBase.replace(/\/$/, '')
 
+// Render's free plan can need 30–60 seconds to wake up after inactivity.
+// 20s was too short and produced the intermittent "server response timed out"
+// error on the login page.
+export const API_TIMEOUT = 75000
+
 const api = axios.create({
   baseURL,
-  timeout: 20000,
+  timeout: API_TIMEOUT,
 })
 
 export function getAccessToken() {
@@ -70,7 +75,7 @@ export async function refreshAccessToken() {
   const response = await axios.post(
     `${baseURL}/token/refresh/`,
     { refresh },
-    { timeout: 20000 },
+    { timeout: API_TIMEOUT },
   )
   const access = response.data?.access
   if (!access) throw new Error('Refresh response did not include an access token')
