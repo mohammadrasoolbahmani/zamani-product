@@ -40,9 +40,9 @@ function firstMessage(value) {
 export function getApiErrorMessage(error, fallback = 'خطایی رخ داد. دوباره تلاش کنید.') {
   if (!error?.response) {
     if (error?.code === 'ECONNABORTED') {
-      return 'زمان پاسخ سرور به پایان رسید. اتصال را بررسی کنید.'
+      return 'سرور در حال بیدار شدن است و پاسخ دیرتر از حد معمول رسید. چند لحظه صبر کنید و دوباره تلاش کنید.'
     }
-    return 'ارتباط با سرور برقرار نشد. از اجرای بک‌اند مطمئن شوید.'
+    return 'ارتباط با سرور برقرار نشد. اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید.'
   }
 
   const data = error.response.data
