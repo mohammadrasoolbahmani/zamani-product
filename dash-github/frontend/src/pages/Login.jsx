@@ -16,6 +16,7 @@ import BrandLogo from '../components/BrandLogo'
 import LogoLoader from '../components/LogoLoader'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import api from '../api/client'
 import { getApiErrorMessage } from '../api/errors'
 import { faDigits } from '../utils/format'
 import { toJalaliParts, todayISO } from '../utils/date'
@@ -29,12 +30,20 @@ export default function Login() {
   const [form, setForm] = useState({ username: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [slow, setSlow] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
     document.title = 'ورود | ZAMANI BURGER'
     if (!initializing) usernameRef.current?.focus()
   }, [initializing])
+
+  useEffect(() => {
+    // A sleeping free-tier backend needs up to a minute to wake up.
+    // Start the wake-up request as soon as the login page opens, while the
+    // user is still typing their credentials.
+    api.get('/health/').catch(() => {})
+  }, [])
 
   if (initializing) return <LogoLoader label="در حال آماده‌سازی پنل…" />
   if (user) return <Navigate to="/dashboard" replace />
@@ -52,7 +61,9 @@ export default function Login() {
       return
     }
     setLoading(true)
+    setSlow(false)
     setError('')
+    const slowTimer = window.setTimeout(() => setSlow(true), 6000)
     try {
       const loggedIn = await login(form.username.trim(), form.password)
       toast.success(`خوش آمدید، ${loggedIn.display_name || loggedIn.username}`)
@@ -67,6 +78,8 @@ export default function Login() {
         setError(getApiErrorMessage(requestError, 'ورود ناموفق بود. دوباره تلاش کنید.'))
       }
     } finally {
+      window.clearTimeout(slowTimer)
+      setSlow(false)
       setLoading(false)
     }
   }
@@ -195,8 +208,14 @@ export default function Login() {
                 ) : (
                   <LuLogIn className="size-[18px]" />
                 )}
-                {loading ? 'در حال ورود…' : 'ورود'}
+                {loading ? (slow ? 'در حال بیدار کردن سرور…' : 'در حال ورود…') : 'ورود'}
               </button>
+
+              {loading && slow && (
+                <p className="text-center text-[10px] leading-5 text-white/35">
+                  اولین ورود پس از مدتی بی‌کاری ممکن است تا یک دقیقه طول بکشد.
+                </p>
+              )}
             </form>
 
             <div className="mt-5 flex items-center justify-center gap-1.5 text-[10px] text-white/30">
